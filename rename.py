@@ -31,9 +31,9 @@ def main(args):
             logging.error(str(err))
     else:
         paths = Path().glob(args.path)
+    paths = [path for path in paths if path.is_file()]
     
     if args.v:
-        paths = [path for path in paths if path.is_file()]
         root_path = ''
         for path in paths:
             if str(path.parent) != root_path:
