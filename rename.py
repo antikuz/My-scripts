@@ -18,14 +18,14 @@ def set_relative_path(args):
         relative_path = Path(args.source).relative_to(Path.cwd())
     except ValueError as err:
         logging.error(str(err))
-        chdir(Path(args.source).root)
+        chdir(Path(args.source).anchor)
     relative_path = Path(args.source).relative_to(Path.cwd())
     args.source = str(relative_path)
 
 
 def get_ctime(file, format='%y%m%d%H%M%S'):
-    format = '%m%d_%H%M%S'
     # Get create file time
+    format = '%m%d_%H%M%S'
     filetime = file.stat().st_ctime
     datetimetime = dt.fromtimestamp(filetime)
     ctime = datetimetime.strftime(format)
@@ -33,8 +33,8 @@ def get_ctime(file, format='%y%m%d%H%M%S'):
 
 
 def get_mtime(file, format='%y%m%d%H%M%S'):
-    format = '%m%d_%H%M%S'
     # Get modified file time
+    format = '%m%d_%H%M%S'
     filetime = file.stat().st_mtime
     datetimetime = dt.fromtimestamp(filetime)
     mtime = datetimetime.strftime(format)
@@ -69,6 +69,9 @@ def main(args):
 
     if args.recurse:
         try:
+            if '**' not in args.source:
+                parts = Path(args.source).parts
+                args.source = '\\'.join((*parts[:-1], '**', parts[-1]))
             paths = Path().rglob(args.source)
         except OSError as err:
             logging.error(str(err))
