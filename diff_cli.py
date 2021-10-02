@@ -4,6 +4,8 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+import webbrowser
+
 
 def file_mtime(path):
     time = datetime.fromtimestamp(os.stat(path).st_mtime, timezone.utc)
@@ -73,6 +75,7 @@ def main():
         diff = make_html(diff)
         with open(args.make_html, 'w', encoding='utf8') as fh:
             fh.write(diff)
+        webbrowser.open(args.make_html)
         return
     
     sys.stdout.writelines(diff)
