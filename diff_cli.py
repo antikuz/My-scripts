@@ -55,9 +55,9 @@ def main():
     old_file_date = file_mtime(old_file)
     new_file_date = file_mtime(new_file)
     
-    with open(new_file) as ff:
+    with open(old_file) as ff:
         old_file_text = ff.readlines()
-    with open(old_file) as tf:
+    with open(new_file) as tf:
         new_file_text = tf.readlines()
 
     if args.context:
